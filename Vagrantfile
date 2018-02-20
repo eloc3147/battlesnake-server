@@ -12,5 +12,10 @@ Vagrant.configure("2") do |config|
     v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
   end
 
-  config.vm.provision "shell", path: 'scripts/provision.sh'
+  Vagrant.configure("2") do |config|
+    config.vm.network "forwarded_port", guest: 3000, host: 3080
+  end
+
+  config.vm.provision "shell", path: 'scripts/build-langs.sh', keep_color: true
+  config.vm.provision "shell", path: 'scripts/provision.sh', keep_color: true, privileged: false
 end
