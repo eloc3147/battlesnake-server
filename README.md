@@ -146,7 +146,7 @@ interface StartResponse {
    * https://developer.mozilla.org/en-US/docs/Web/CSS/color
    */
   color: string;
-  name: string;
+  name: string; // the name will be ignored by the server and the name used on game create is used now
   /**
    * URL of the image to display as your avatar.
    */
@@ -212,7 +212,7 @@ type TailType =
     "color": "#FF0000",
     "secondary_color": "#00FF00",
     "head_url": "http://placecage.com/c/100/100",
-    "name": "Cage Snake",
+    "name": "Cage Snake", // the name will be ignored by the server and the name used on game create is used now
     "taunt": "OH GOD NOT THE BEES",
     "head_type": "pixel",
     "tail_type": "pixel"
@@ -456,11 +456,14 @@ and Elixir through [kiex](https://github.com/taylor/kiex).
 
 ```sh
 git clone git@github.com:sendwithus/battlesnake-server.git`
-cd battle_snake
-yarn install
+cd battlesnake-server
+
 mix do local.hex --force, local.rebar
 mix do deps.get, deps.compile
 mix do ecto.create, ecto.migrate
+
+yarn install
+
 mix phx.server
 ```
 

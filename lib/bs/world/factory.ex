@@ -82,19 +82,29 @@ defmodule Bs.World.Factory do
       data: %{}
     )
 
-    world = put_in(world.snakes, snakes)
-
     world = World.stock_food(world)
+    put_in(world.snakes, set_snake_coords(snakes, world, game))
+  end
 
-    update_in(world.snakes, fn snakes ->
-      for snake <- snakes do
-        {:ok, point} = World.rand_unoccupied_space(world)
+  defp set_snake_coords(snakes, world, game) do
+    set_snake_coords(snakes, world, game, [])
+  end
 
-        coords = List.duplicate(point, game.snake_start_length)
+  defp set_snake_coords([head | tail], world, game, acc) do
+    {:ok, point} =
+      World.rand_unoccupied_space(
+        world,
+        1,
+        Enum.map(acc, &List.first(&1.coords))
+      )
 
-        put_in(snake.coords, coords)
-      end
-    end)
+    coords = List.duplicate(point, game.snake_start_length)
+    head = Map.put(head, :coords, coords)
+    set_snake_coords(tail, world, game, [head | acc])
+  end
+
+  defp set_snake_coords([], _, _, acc) do
+    acc
   end
 end
 
@@ -104,7 +114,7 @@ defmodule Bs.World.Factory.Worker do
 
   def run(permalink, gameid, opts \\ [])
 
-  def run(%{id: id, url: url}, gameid, data) do
+  def run(%{id: id, url: url, name: name}, gameid, data) do
     start_url = "#{url}/start"
 
     {tc, response} =
@@ -126,9 +136,13 @@ defmodule Bs.World.Factory.Worker do
       ]
     )
 
-    json = Poison.decode!(response.body)
+    json =
+      case Poison.decode(response.body) do
+        {:ok, j} -> j
+        {:error, _, _} -> %{}
+      end
 
-    model = %Snake{url: url, id: id}
+    model = %Snake{url: String.trim(url, "/"), id: id, name: name}
 
     changeset = Snake.changeset(model, json)
 
