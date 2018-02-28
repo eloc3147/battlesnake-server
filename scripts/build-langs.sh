@@ -9,7 +9,7 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 
 sudo apt-get update
 sudo apt-get install -qq dpkg-dev dpkg gcc g++ libc-dev make autoconf ncurses-dev unixodbc-dev tar \
-                        lksctp-tools pax-utils unzip git libgmp3-dev npm openssl yarn
+                        lksctp-tools pax-utils unzip git libgmp3-dev npm openssl yarn inotify-tools
 
 export ERL_TOP="/usr/src/otp_src_${OTP_VERSION%%@*}"
 mkdir -vp $ERL_TOP

@@ -9,5 +9,5 @@ nvm install node
 
 cd /vagrant
 
-mix do local.hex --force, local.rebar, deps.get, deps.compile, compile
+mix do local.hex --force, local.rebar, deps.get, deps.compile, compile, ecto.create, ecto.migrate
 yarn install

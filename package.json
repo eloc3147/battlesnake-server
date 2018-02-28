@@ -23,5 +23,7 @@
     "docker:build": "docker build -t sendwithus/battlesnake-server . && docker push sendwithus/battlesnake-server"
   },
   "version": "1.0.0",
-  "dependencies": {}
+  "dependencies": {
+    "elm": "^0.18.0"
+  }
 }
